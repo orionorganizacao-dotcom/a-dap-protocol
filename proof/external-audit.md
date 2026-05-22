@@ -1,98 +1,183 @@
-# External Audit Procedure
+# External Audit Checklist
+
+This document defines the minimal external audit process for A-DAP.
 
 Objective:
 
-Allow a third party to validate A-DAP without prior knowledge.
-
-## Step 1 — Read the protocol definition
-
-Read:
-
-specification/adap-spec-v0.1.md
-
-Expected understanding:
-
-- Problem definition
-- Core principle
-- Scope limitations
+Allow an independent third party to verify integrity, temporal consistency, and tamper resistance without requiring access to internal systems.
 
 ---
 
-## Step 2 — Inspect the decision envelope
+## Audit Goal
 
-Inspect:
+The auditor should be able to determine:
 
+✓ A decision existed before execution
+
+✓ Decision evidence remained unchanged
+
+✓ Any modification becomes detectable
+
+✓ Verification can be reproduced independently
+
+---
+
+# Step 1 — Inspect the Original Envelope
+
+Open:
+
+```text
 examples/minimal-envelope.json
+```
 
-Expected understanding:
+Expected structure:
 
-- Minimal decision envelope structure
-- Envelope fields
-- Timestamp relation
-- Integrity fields
+```json
+{
+  "decision_id":"HT-001",
+  "timestamp":"2026-05-22T14:30:00Z",
+  "system":"Healthcare Triage AI",
+  "patient_reference":"PAT-2034",
+  "decision":"High Risk Priority",
+  "reasoning_reference":"severity_score >= threshold",
+  "decision_hash":"<SHA256>"
+}
+```
+
+Verify:
+
+✓ decision exists
+
+✓ timestamp exists
+
+✓ decision_hash exists
 
 ---
 
-## Step 3 — Execute verification
+# Step 2 — Run Reference Verification
 
-Run:
+Execute:
 
 ```bash
-python reference/verify_adap.py examples/minimal-envelope.json
+python reference/verify_adap.py
 ```
 
-Expected result:
+Expected output:
 
 ```text
-✓ Verification passed
+A-DAP Verification
+
+Expected hash:
+8d43f9e12ab45c78f4ab2...
+
+Computed hash:
+8d43f9e12ab45c78f4ab2...
+
+RESULT:
+
+HASH MATCH ✓
+Envelope integrity verified
 ```
 
-Expected conclusion:
+Interpretation:
 
-The decision evidence structure remains intact.
+The decision payload has not changed.
 
 ---
 
-## Step 4 — Execute tamper test
+# Step 3 — Tamper Test
 
-Run:
+Open:
+
+```text
+examples/minimal-envelope.json
+```
+
+Modify:
+
+Before:
+
+```json
+"decision":"High Risk Priority"
+```
+
+After:
+
+```json
+"decision":"Low Risk Priority"
+```
+
+Save file.
+
+Run again:
 
 ```bash
-python reference/verify_adap.py examples/tampered-envelope.json
+python reference/verify_adap.py
 ```
 
-Expected result:
+Expected output:
 
 ```text
-✗ Integrity validation failed
+A-DAP Verification
+
+Expected hash:
+8d43f9e12ab45c78f4ab2...
+
+Computed hash:
+7ac81de93fa11ab54d1...
+
+RESULT:
+
+HASH MISMATCH ✗
+Integrity violation detected
 ```
 
-Expected conclusion:
+Interpretation:
 
-Any modification breaks verification.
-
----
-
-## Validation Criteria
-
-The reviewer should independently conclude:
-
-1. Decision evidence existed before outcome observation
-
-2. Integrity can be independently verified
-
-3. Verification is distinct from explanation
-
-4. Correctness is outside protocol scope
+A modification occurred after the original decision was recorded.
 
 ---
 
-## Final Statement
+# Step 4 — Temporal Integrity Verification
 
-A-DAP preserves independently verifiable evidence.
+Integrity alone does not prove chronology.
 
-A-DAP does not preserve truth.
+An external anchor should exist.
 
-A-DAP does not prove correctness.
+Examples:
 
-A-DAP preserves evidence for reconstruction.
+• RFC3161 timestamp authority
+
+• OpenTimestamps proof
+
+• Independent witness hash
+
+• External signed receipt
+
+Example:
+
+```text
+SHA256:
+
+8d43f9e12ab45c78f4ab2...
+
+Anchored:
+
+2026-05-22
+14:30 UTC
+```
+
+Verify:
+
+✓ external timestamp exists
+
+✓ timestamp precedes execution
+
+---
+
+# Step 5 — Independent Reproduction
+
+An independent auditor should reproduce:
+
+```bash
+python reference
