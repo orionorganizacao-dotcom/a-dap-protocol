@@ -1,136 +1,105 @@
-# Quick Start (10-Minute External Audit)
+# A-DAP
+### Auditable Decision Accountability Protocol
 
-An external reviewer can understand A-DAP by following this order:
-
-### Step 1 — Read the protocol definition
-
-```text
-specification/adap-spec-v0.1.md
-```
-
-Purpose:
-
-Understand what A-DAP claims and what it explicitly does not claim.
+Canonical entrypoint for externally verifiable decision evidence.
 
 ---
 
-### Step 2 — Inspect a minimal decision envelope
+## What is A-DAP?
 
-```text
-examples/minimal-envelope.json
-```
+A-DAP is a minimal protocol designed to preserve decision evidence before execution.
 
-Purpose:
+Traditional systems usually preserve:
 
-Observe the minimum structure required to preserve independently verifiable evidence.
+- outputs
+- logs
+- explanations
+- post-hoc justifications
 
----
+A-DAP preserves something different:
 
-### Step 3 — Inspect a ledger example
+**verifiable evidence that a decision existed before its outcome was observed.**
 
-```text
-examples/ledger.json
-```
+Core principle:
 
-Purpose:
-
-Understand how evidence can be chained and preserved.
+"Auditability is not explaining a decision. Auditability is preserving independent evidence that a decision existed before the result."
 
 ---
 
-### Step 4 — Inspect verification flow
+## Problem
 
-```text
-examples/verification-example.md
-```
+Traditional architectures:
 
-Purpose:
+User
+↓
+Model
+↓
+Action
+↓
+Log
 
-Understand how an external observer reconstructs evidence.
+Problem:
+
+Logs can be modified.
+
+Explanations can be generated after execution.
+
+Narratives can be reconstructed after outcomes become known.
+
+Without prior evidence:
+
+Decision ≠ Proof
 
 ---
 
-### Step 5 — Run the reference verifier
+## A-DAP architecture
 
-```bash
-python reference/verify_adap.py
-```
+A-DAP introduces a pre-execution evidence layer.
 
-Expected result:
+User
+↓
+Model
+↓
+Decision Envelope
+↓
+Hash Generation
+↓
+Evidence Record
+↓
+Execution
 
-```text
-✓ Verification passed
-```
+The objective is not to prove correctness.
+
+The objective is to preserve:
+
+- existence
+- integrity
+- temporality
 
 ---
 
-# Repository Structure
+## Repository Structure
 
 ```text
 a-dap-protocol/
 │
-├── README.md
-│
 ├── specification/
-│   └── adap-spec-v0.1.md
+│
+├── proof/
 │
 ├── examples/
-│   ├── minimal-envelope.json
-│   ├── ledger.json
-│   └── verification-example.md
 │
-├── reference/
-│   └── verify_adap.py
+├── cases/
+│   ├── healthcare-triage.md
+│   ├── credit-scoring.md
+│   ├── content-moderation.md
+│   └── autonomous-agents.md
 │
+├── integration/
+│   ├── openai-agent-flow.md
+│   ├── openai-envelope-example.json
+│   ├── openai-sdk-example.py
+│   └── verification-flow.md
+│
+├── README.md
 └── LICENSE
-```
-
----
-
-# Expected Understanding After 10 Minutes
-
-✓ What problem A-DAP solves
-
-✓ What A-DAP does not solve
-
-✓ How evidence is preserved
-
-✓ How independent reconstruction works
-
-✓ How verification occurs
-
----
-
-# Scope Boundaries
-
-A-DAP does not:
-
-✗ Prove correctness of decisions
-
-✗ Guarantee truthfulness of inputs
-
-✗ Prevent malicious operators
-
-✗ Replace institutional accountability
-
-✗ Explain reasoning after execution
-
-A-DAP provides:
-
-✓ Evidence preservation
-
-✓ Integrity validation
-
-✓ Temporal precedence
-
-✓ Independent reconstruction
-
-✓ Verifiability outside the system
-
----
-
-# Canonical Statement
-
-> "Auditability is not explaining a decision.
->
-> Auditability is preserving independent evidence that the decision existed before its outcome."
