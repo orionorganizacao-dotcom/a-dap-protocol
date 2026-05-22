@@ -1,13 +1,26 @@
 # A-DAP
+
+![Status](https://img.shields.io/badge/status-frozen-blue)
+![Review](https://img.shields.io/badge/review-hostile-orange)
+![License](https://img.shields.io/badge/license/license-MIT-green)
+![Version](https://img.shields.io/badge/version-v0.1-black)
+
 ### Auditable Decision Accountability Protocol
 
-Canonical public implementation of the Auditable Decision Accountability Protocol (A-DAP).
+Canonical public implementation and public source of truth for the Auditable Decision Accountability Protocol (A-DAP).
+
+> Status: A-DAP v0.1 — Frozen for hostile external review
+>
+> Current objective:
+>
+> Attempt to break the protocol.
 
 ---
 
-## Core Definition
+# Core Definition
 
 > Auditability is not explaining a decision.
+>
 > Auditability is preserving independent evidence that a decision existed before its outcome.
 
 A-DAP introduces the concept of **Verifiable Prior Existence**:
@@ -16,13 +29,14 @@ A-DAP introduces the concept of **Verifiable Prior Existence**:
 
 ---
 
-## Why A-DAP Exists
+# Why A-DAP Exists
 
 Current AI governance and explainability systems primarily reconstruct explanations after execution.
 
 Examples:
 
-- Explainability frameworks (LIME, SHAP)
+- Explainability frameworks (LIME)
+- Explainability frameworks (SHAP)
 - Documentation standards
 - Logging systems
 - Governance reports
@@ -38,27 +52,27 @@ A-DAP asks a different question:
 
 ---
 
-## Architectural Principles
+# Architectural Principles
 
-### P1 — Record ≠ Proof
+## P1 — Record ≠ Proof
 
 Documenting an event is not equivalent to proving it existed before observation.
 
 ---
 
-### P2 — Explanation ≠ Verification
+## P2 — Explanation ≠ Verification
 
 Post-hoc explanations do not demonstrate prior existence.
 
 ---
 
-### P3 — Decisions without verifiable prior existence generate narratives, not evidence
+## P3 — Decisions without verifiable prior existence generate narratives, not evidence
 
 Retrospective rationalization is indistinguishable from competence without preserved evidence.
 
 ---
 
-## Scope
+# Scope
 
 A-DAP currently targets:
 
@@ -70,13 +84,13 @@ A-DAP currently targets:
 
 ✅ Deterministic ML pipelines
 
-✅ Temperature=0 controlled LLM environments
+✅ Temperature = 0 controlled LLM environments
 
 ✅ Binary and categorical decision systems
 
 ---
 
-## Current limitations
+# Current Limitations
 
 A-DAP v0.1 does not fully address:
 
@@ -92,7 +106,7 @@ A-DAP v0.1 does not fully address:
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```text
 A-DAP/
@@ -100,7 +114,6 @@ A-DAP/
 ├── README.md
 ├── PROOF.md
 ├── REVIEW_REQUEST.md
-├── REPOSITORY_MAP.md
 │
 ├── specification/
 │
@@ -117,11 +130,7 @@ A-DAP/
 
 ---
 
-## Repository Status
-
-Status:
-
-ACTIVE
+# Repository Status
 
 This repository is the single public source of truth for:
 
@@ -131,13 +140,13 @@ This repository is the single public source of truth for:
 - Integrations
 - External review
 
-Historical repositories are preserved only for reproducibility.
+Historical repositories are preserved for reproducibility and historical transparency.
 
 Archived repositories must not be interpreted as current protocol definitions.
 
 ---
 
-## Verification Path
+# Verification Path
 
 Minimal cold-start verification:
 
@@ -169,7 +178,7 @@ Verification: PASS
 
 ---
 
-## Tamper Test
+# Tamper Test
 
 The repository includes an intentional falsification example:
 
@@ -191,49 +200,56 @@ Verification: FAIL
 
 ---
 
-## Proof of Prior Existence
+# Proof of Prior Existence
 
 A-DAP supports independent timestamp anchoring.
 
 Current pathway:
 
-- SHA256 integrity
+- SHA256 integrity verification
 - Independent timestamp proof
 - External verification
 - Tamper resistance
 
 See:
 
+```text
 proof/TIMESTAMPING.md
+```
 
 ---
 
-## External Audit
+# External Audit
 
 Independent reviewers are encouraged to attempt:
 
 - Integrity attacks
 - Temporal attacks
 - Reproducibility failures
-- Hash collisions
 - Verification inconsistencies
 - Boundary failures
 
 See:
 
+```text
 REVIEW_REQUEST.md
+```
 
 ---
 
-## Threat Model
+# Threat Model
 
 A-DAP does NOT claim to:
 
-- prove truth
-- eliminate manipulation
-- guarantee correctness
-- create institutional accountability
-- solve all AI governance problems
+❌ Prove truth
+
+❌ Eliminate manipulation
+
+❌ Guarantee correctness
+
+❌ Create institutional accountability
+
+❌ Solve all AI governance problems
 
 A-DAP only claims:
 
@@ -241,7 +257,7 @@ A-DAP only claims:
 
 ---
 
-## Design Philosophy
+# Design Philosophy
 
 Traditional systems:
 
@@ -269,7 +285,29 @@ Verification
 
 ---
 
-## Citation
+# Protocol State
+
+Current version:
+
+```text
+A-DAP v0.1
+```
+
+Current phase:
+
+```text
+Frozen for hostile external review
+```
+
+Current objective:
+
+```text
+Attempt to break the protocol
+```
+
+---
+
+# Citation
 
 If using A-DAP in research:
 
@@ -286,20 +324,18 @@ https://github.com/orionorganizacao-dotcom/a-dap-protocol
 
 ---
 
-## License
+# License
 
 MIT License
 
 ---
 
-## Current Status
+# Final Note
 
-A-DAP v0.1
+The purpose of A-DAP is not to establish truth.
 
-Status:
+The purpose of A-DAP is to preserve evidence.
 
-Protocol frozen for hostile external review.
+Truth requires institutions.
 
-Current objective:
-
-> Attempt to break the protocol.
+Evidence requires architecture.
