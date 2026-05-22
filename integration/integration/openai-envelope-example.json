@@ -1,0 +1,9 @@
+{
+  "id":"decision-001",
+  "timestamp":"2026-05-22T14:15:00Z",
+  "user_request":"Schedule meeting tomorrow 10AM",
+  "decision":"Create calendar event",
+  "tool":"calendar.create",
+  "decision_hash":"9f42ab83c41de7f1",
+  "status":"PRE-COMMIT"
+}
