@@ -2,8 +2,12 @@
 
 ![Status](https://img.shields.io/badge/status-frozen-blue)
 ![Review](https://img.shields.io/badge/review-hostile-orange)
-![License](https://img.shields.io/badge/license/license-MIT-green)
+![License](https://img.shields.io/badge/license-MIT-green)
 ![Version](https://img.shields.io/badge/version-v0.1-black)
+
+> Auditability is not explaining a decision.
+>
+> Auditability is preserving independent evidence that a decision existed before its outcome.
 
 ### Auditable Decision Accountability Protocol
 
@@ -19,30 +23,26 @@ Canonical public implementation and public source of truth for the Auditable Dec
 
 # Core Definition
 
-> Auditability is not explaining a decision.
->
-> Auditability is preserving independent evidence that a decision existed before its outcome.
-
 A-DAP introduces the concept of **Verifiable Prior Existence**:
 
-**The ability to demonstrate that a decision existed, remained intact, and can be independently verified before the observation of its outcome.**
+**The ability to demonstrate that a decision existed, remained intact, and can be independently verified before observation of its outcome.**
 
 ---
 
 # Why A-DAP Exists
 
-Current AI governance and explainability systems primarily reconstruct explanations after execution.
+Current AI governance systems primarily reconstruct explanations after execution.
 
-Examples:
+Examples include:
 
-- Explainability frameworks (LIME)
-- Explainability frameworks (SHAP)
-- Documentation standards
+- LIME
+- SHAP
 - Logging systems
+- Documentation frameworks
 - Governance reports
-- Risk frameworks
+- Risk management standards
 
-These approaches answer:
+These approaches usually answer:
 
 > "Why do we think the model decided this?"
 
@@ -56,7 +56,7 @@ A-DAP asks a different question:
 
 ## P1 — Record ≠ Proof
 
-Documenting an event is not equivalent to proving it existed before observation.
+Documenting an event is not equivalent to proving that the event existed before observation.
 
 ---
 
@@ -74,19 +74,21 @@ Retrospective rationalization is indistinguishable from competence without prese
 
 # Scope
 
-A-DAP currently targets:
+Current intended applications:
 
 ✅ Credit scoring systems
 
 ✅ Clinical decision pipelines
 
-✅ Rule-based automated systems
+✅ Rule-based systems
 
-✅ Deterministic ML pipelines
+✅ Deterministic machine learning pipelines
 
 ✅ Temperature = 0 controlled LLM environments
 
-✅ Binary and categorical decision systems
+✅ Binary decision systems
+
+✅ Categorical decision systems
 
 ---
 
@@ -140,7 +142,7 @@ This repository is the single public source of truth for:
 - Integrations
 - External review
 
-Historical repositories are preserved for reproducibility and historical transparency.
+Historical repositories are preserved for reproducibility and transparency.
 
 Archived repositories must not be interpreted as current protocol definitions.
 
@@ -158,7 +160,7 @@ cd a-dap-protocol
 python verify_adap.py examples/minimal-envelope.json
 ```
 
-Expected result:
+Expected:
 
 ```bash
 Envelope loaded
@@ -180,7 +182,7 @@ Verification: PASS
 
 # Tamper Test
 
-The repository includes an intentional falsification example:
+Intentional falsification example:
 
 ```bash
 python verify_adap.py examples/tampered-envelope.json
@@ -287,19 +289,19 @@ Verification
 
 # Protocol State
 
-Current version:
+Current Version:
 
 ```text
 A-DAP v0.1
 ```
 
-Current phase:
+Current Phase:
 
 ```text
 Frozen for hostile external review
 ```
 
-Current objective:
+Current Objective:
 
 ```text
 Attempt to break the protocol
