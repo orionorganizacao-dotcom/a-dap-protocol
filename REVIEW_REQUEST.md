@@ -1,33 +1,38 @@
 # External Review Request — A-DAP v0.1
 
-## Objective
+---
+
+# Objective
 
 This repository contains the minimal public implementation of A-DAP (Auditable Decision Accountability Protocol).
 
-The objective of this review is not to validate correctness of decisions.
+The objective of this review is NOT to validate the correctness of decisions.
 
 The objective is to evaluate whether independent verification of decision evidence is structurally possible.
 
 Core hypothesis:
 
 "Auditability is not explaining a decision after execution.
+
 Auditability is preserving independent evidence that the decision existed before the result."
 
 ---
 
-## What to review
+# What to review
 
-Please evaluate:
+Please evaluate the following dimensions independently.
 
-### 1. Deterministic reproducibility
+---
+
+## 1. Deterministic Reproducibility
 
 Questions:
 
-- Can the same envelope generate the same hash repeatedly?
-- Can independent execution reproduce identical results?
+- Can identical envelopes generate identical hashes?
+- Can independent execution reproduce the same outputs?
 - Is serialization deterministic?
 
-Files:
+Relevant files:
 
 ```text
 examples/minimal-envelope.json
@@ -35,51 +40,151 @@ reference/verify_adap.py
 PROOF.md
 ```
 
-### 2. Tamper resistance
+Expected outcome:
+
+```text
+Same input
+↓
+Same serialized payload
+↓
+Same hash
+↓
+Same verification result
+```
+
+---
+
+## 2. Tamper Resistance
 
 Questions:
 
 - Does modification invalidate verification?
-- Does the tamper test fail correctly?
+- Does the verification process detect tampering?
+- Is envelope integrity preserved?
 
-Files:
+Relevant files:
 
 ```text
 examples/tampered-envelope.json
 examples/tamper-test.md
 ```
 
-### 3. Temporal evidence
+Expected outcome:
+
+```text
+Original envelope
+PASS
+
+Modified envelope
+FAIL
+```
+
+---
+
+## 3. Temporal Evidence (Anteriority)
 
 Questions:
 
-- Can existence be independently verified?
-- Does timestamping demonstrate anteriority?
+- Can evidence existence be independently verified?
+- Can envelope existence be demonstrated before results become known?
+- Does timestamping provide independent temporal evidence?
 
-Files:
+Relevant files:
 
 ```text
 proof/TIMESTAMPING.md
 proof/
 ```
 
-### 4. Cold-start verification
+Expected outcome:
+
+```text
+Envelope
+↓
+Hash
+↓
+Timestamp receipt
+↓
+Independent verification
+```
+
+---
+
+## 4. Cold-Start Verification
 
 Questions:
 
 Can a third party:
 
-```bash
-git clone
-run verification
-obtain identical output
-```
+- Clone the repository
+- Run verification
+- Reproduce the result
 
-without requiring internal system access?
+without requiring:
+
+- internal system access
+- proprietary infrastructure
+- hidden dependencies
+- author intervention
+
+Expected flow:
+
+```text
+Clone
+↓
+Execute
+↓
+Verify
+↓
+Obtain identical output
+```
 
 ---
 
-## Out of scope
+# Reproduction Path
+
+Minimal independent verification:
+
+```bash
+git clone https://github.com/orionorganizacao-dotcom/a-dap-protocol.git
+
+cd a-dap-protocol
+
+python reference/verify_adap.py
+```
+
+Expected output:
+
+```text
+A-DAP Verification
+
+Loading envelope...
+
+Serialized payload:
+
+{"decision":"High Risk Priority","decision_id":"HT-001","patient_reference":"PAT-2034","reasoning_reference":"severity_score >= threshold","system":"Healthcare Triage AI","timestamp":"2026-05-22T14:30:00Z"}
+
+Computed SHA256:
+
+d7a2f4d7f638e31cb98a3a0d87c4f0f5f7a94e8c6c0d8f4d88e3a52d6e6e5f1c
+
+Verification:
+
+PASS
+Envelope integrity verified
+```
+
+See:
+
+```text
+PROOF.md
+```
+
+for expected reference output.
+
+---
+
+# Out of Scope
 
 This review does NOT attempt to prove:
 
@@ -87,7 +192,9 @@ This review does NOT attempt to prove:
 - institutional accountability
 - absence of malicious actors
 - truthfulness of inputs
-- complete system security
+- full system security
+- model fairness
+- legal compliance
 
 A-DAP only attempts to verify:
 
@@ -97,47 +204,81 @@ A-DAP only attempts to verify:
 
 ---
 
-## Suggested adversarial questions
+# Suggested Adversarial Questions
 
-1. Can evidence be forged after observing the result?
+1. Can evidence be generated after observing the result?
 
 2. Can hash generation be manipulated?
 
 3. Can serialization differences create inconsistent outputs?
 
-4. Can verification be reproduced by an independent machine?
+4. Can independent machines reproduce the same result?
 
-5. Can timestamp evidence be falsified?
+5. Can timestamp evidence be forged?
 
-6. What assumptions are trusted?
+6. Which assumptions are trusted?
 
-7. What failure modes remain?
+7. Which failure modes remain?
+
+8. Can two implementations generate different hashes?
+
+9. What happens if the verification script changes?
+
+10. Can a malicious actor bypass the verification process?
 
 ---
 
-## Expected outcome
+# Failure Modes
+
+Known limitations:
+
+- Full collusion between all participants remains outside scope.
+- Hardware root-of-trust is not implemented.
+- Timestamp provider assumptions remain explicit.
+- A-DAP provides verifiability, not truth.
+- A-DAP does not create accountability institutions.
+
+---
+
+# Expected Outcomes
 
 Possible review outcomes:
 
-### PASS
+## PASS
 
 Independent reproduction successful.
 
-### PARTIAL PASS
+Evidence integrity preserved.
 
-Architecture valid with identified weaknesses.
-
-### FAIL
-
-Verification cannot be independently reproduced.
+No critical architectural weaknesses identified.
 
 ---
 
-## Reviewer Notes
+## PARTIAL PASS
+
+Core architecture valid.
+
+Weaknesses identified requiring revision.
+
+---
+
+## FAIL
+
+Independent verification cannot be reproduced.
+
+Integrity cannot be demonstrated.
+
+Critical assumptions invalidate verification.
+
+---
+
+# Reviewer Notes
 
 Reviewer:
 
 Date:
+
+Environment:
 
 Observations:
 
@@ -150,3 +291,8 @@ Recommendations:
 Final status:
 
 PASS / PARTIAL PASS / FAIL
+
+---
+
+End of document
+A-DAP v0.1
