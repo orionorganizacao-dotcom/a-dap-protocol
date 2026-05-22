@@ -1,0 +1,9 @@
+{
+"decision_id":"HT-001",
+"timestamp":"2026-05-22T14:30:00Z",
+"system":"Healthcare Triage AI",
+"patient_reference":"PAT-2034",
+"decision":"High Risk Priority",
+"reasoning_reference":"severity_score >= threshold",
+"decision_hash":"<real_sha256>"
+}
