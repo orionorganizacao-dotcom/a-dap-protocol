@@ -1,0 +1,7 @@
+{
+    "decision_id":"A001",
+    "timestamp":"2026-05-22T09:41:00Z",
+    "action":"approve_transaction",
+    "input_reference":"request_8472",
+    "reasoning":"Transaction approved according to predefined rules"
+}
