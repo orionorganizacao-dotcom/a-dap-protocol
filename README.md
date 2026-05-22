@@ -1,5 +1,11 @@
 # A-DAP Protocol
-Auditable Decision Accountability Protocol
+
+Verifiable Decision Preservation Protocol
+
+Core statement:
+
+> "Recording is not proving.  
+> Explanation is not verification."
 
 A-DAP is a protocol for preserving independently verifiable evidence that a decision existed before its outcome.
 
@@ -11,21 +17,57 @@ It preserves evidence that allows independent reconstruction.
 
 ---
 
+## Why A-DAP Exists
+
+Traditional systems typically preserve logs, outputs and retrospective explanations.
+
+The problem:
+
+Logs can be modified.
+
+Explanations can be generated after outcomes are known.
+
+Retrospective narratives are not equivalent to independent evidence.
+
+A-DAP addresses a different problem:
+
+Preserving evidence that a decision existed before its outcome.
+
+---
+
 ## Core Principle
 
 Traditional systems:
 
-Decision → Action → Log → Explanation
+```text
+Decision
+↓
+Action
+↓
+Log
+↓
+Explanation
+```
 
 A-DAP:
 
-Decision → Commit → Independent Evidence → Action
+```text
+Decision
+↓
+Commit
+↓
+Independent Evidence
+↓
+Execution
+↓
+Reconstruction
+```
 
 The distinction is fundamental:
 
-Recording is not proving.
-
-Explanation is not verification.
+- Recording is not proving
+- Explanation is not verification
+- Retrospective narratives are not independent evidence
 
 ---
 
@@ -35,11 +77,13 @@ Explanation is not verification.
 
 ✓ Temporal integrity
 
-✓ Independent verification
+✓ Independent verification capability
 
-✓ Reconstruction capability
+✓ Reconstruction support
 
 ✓ Model-agnostic architecture
+
+✓ Tamper detection
 
 ---
 
@@ -47,21 +91,40 @@ Explanation is not verification.
 
 ✗ Truth
 
-✗ Accountability by itself
+✗ Correctness guarantees
+
+✗ Institutional accountability by itself
 
 ✗ Perfect transparency
 
 ✗ Immunity against total system compromise
 
+✗ Human governance replacement
+
 ---
 
-## Quick Verification
+## Architectural Components
 
-Go to:
+A minimal A-DAP implementation contains:
 
-examples/minimal-envelope/
+### Decision Envelope
 
-Run:
+Stores decision information before execution.
 
-```bash
-python verify_adap.py
+Typical fields:
+
+```json
+{
+  "decision_id":"A001",
+  "timestamp":"2026-05-22T09:41:00Z",
+  "action":"approve_transaction",
+  "input_reference":"request_8472",
+  "reasoning":"Transaction approved according to predefined rules"
+}
+```
+
+---
+
+### Commitment Layer
+
+Creates cryptographic evidence of the decision state.
