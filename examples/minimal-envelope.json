@@ -1,7 +1,15 @@
 {
-    "decision_id":"A001",
-    "timestamp":"2026-05-22T09:41:00Z",
-    "action":"approve_transaction",
-    "input_reference":"request_8472",
-    "reasoning":"Transaction approved according to predefined rules"
+  "decision_id":"HT-001",
+
+  "timestamp":"2026-05-22T14:30:00Z",
+
+  "system":"Healthcare Triage AI",
+
+  "patient_reference":"PAT-2034",
+
+  "decision":"High Risk Priority",
+
+  "reasoning_reference":"severity_score >= threshold",
+
+  "decision_hash":"8d43f9e12ab45c78f4ab2f9f998c17e"
 }
