@@ -1,37 +1,58 @@
 # Tamper Test
 
-Purpose:
+Objective:
 
-Demonstrate that changing even a single value invalidates integrity.
+Demonstrate that modifying decision evidence invalidates verification.
 
-Original:
+---
 
-```text
-minimal-envelope.json
-```
+Original flow:
 
-Expected:
+Decision
+↓
+Envelope Creation
+↓
+Hash Generation
+↓
+Verification
+↓
+✓ Valid
 
-```text
-✓ Verification passed
-```
+---
 
-Tampered:
+Tampered flow:
 
-```text
-tampered-envelope.json
-```
+Decision
+↓
+Envelope Creation
+↓
+Hash Generation
+↓
+Envelope Modification
+↓
+Verification
+↓
+✗ Invalid
 
-Expected:
+---
 
-```text
-✗ Hash mismatch
+Expected observation:
 
-✗ Integrity validation failed
-```
+Even a small modification produces verification failure.
+
+Examples:
+
+- Timestamp modified
+- Decision content modified
+- Metadata altered
+- Envelope fields changed
+
+---
 
 Conclusion:
 
-A-DAP does not prove correctness.
+Integrity depends on preserving the original evidence structure.
 
-A-DAP proves evidence integrity.
+Verification failure is expected behavior.
+
+Failure demonstrates protection rather than weakness.
