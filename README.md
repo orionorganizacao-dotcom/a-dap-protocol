@@ -1,5 +1,3 @@
----
-
 # Quick Start (10-Minute External Audit)
 
 An external reviewer can understand A-DAP by following this order:
@@ -66,7 +64,7 @@ Expected result:
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```text
 a-dap-protocol/
@@ -89,7 +87,7 @@ a-dap-protocol/
 
 ---
 
-Expected understanding after 10 minutes:
+# Expected Understanding After 10 Minutes
 
 ✓ What problem A-DAP solves
 
@@ -103,7 +101,7 @@ Expected understanding after 10 minutes:
 
 ---
 
-## Scope Boundaries
+# Scope Boundaries
 
 A-DAP does not:
 
@@ -131,7 +129,8 @@ A-DAP provides:
 
 ---
 
-## Canonical Statement
+# Canonical Statement
 
 > "Auditability is not explaining a decision.
+>
 > Auditability is preserving independent evidence that the decision existed before its outcome."
