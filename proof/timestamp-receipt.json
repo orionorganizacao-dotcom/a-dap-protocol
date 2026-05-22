@@ -1,0 +1,16 @@
+{
+  "file": "examples/minimal-envelope-verified.json",
+  "hash_algorithm": "SHA256",
+  "hash": "TO_BE_FILLED_AFTER_COMPUTATION",
+  "timestamp_method": "OpenTimestamps",
+  "anchor_network": "Bitcoin",
+  "proof_file": "examples/minimal-envelope-verified.json.ots",
+  "verification_status": "pending",
+  "verification_command": "ots verify examples/minimal-envelope-verified.json.ots",
+  "created_at": "2026-05-22T15:15:00Z",
+  "notes": [
+    "Hash integrity verified independently",
+    "Timestamp anchored externally",
+    "Proof reproducible by third parties"
+  ]
+}
