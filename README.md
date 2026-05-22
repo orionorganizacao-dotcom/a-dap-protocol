@@ -1,152 +1,106 @@
 # A-DAP
+### Auditable Decision Accountability Protocol
 
-### Verifiable Decision Preservation Protocol
-
-Canonical entrypoint for independently verifiable decision preservation and reconstruction.
-
----
-
-## What is A-DAP?
-
-A-DAP is a minimal protocol designed to preserve independently verifiable evidence that a decision existed before its outcome was observed.
-
-Traditional systems generally preserve:
-
-- outputs
-- logs
-- explanations
-- retrospective justifications
-
-A-DAP preserves something different:
-
-**Evidence of decision existence, integrity and temporal precedence.**
-
-Core statement:
-
-> "Recording is not proving.
->
-> Explanation is not verification."
+Canonical public implementation of the Auditable Decision Accountability Protocol (A-DAP).
 
 ---
 
-## Formal Definition
+## Core Definition
 
-Verifiable prior existence is the property by which a decision can demonstrate:
+> Auditability is not explaining a decision.
+> Auditability is preserving independent evidence that a decision existed before its outcome.
 
-- existence
-- integrity
-- temporal precedence
+A-DAP introduces the concept of **Verifiable Prior Existence**:
 
-before outcome observation.
+**The ability to demonstrate that a decision existed, remained intact, and can be independently verified before the observation of its outcome.**
 
 ---
 
 ## Why A-DAP Exists
 
-Traditional architectures:
-
-```text
-User
-↓
-Model
-↓
-Action
-↓
-Log
-↓
-Explanation
-```
-
-Problems:
-
-Logs can be modified.
-
-Explanations may be generated after outcomes become known.
-
-Retrospective narratives are not equivalent to independent evidence.
-
-Without prior evidence:
-
-```text
-Decision ≠ Proof
-```
-
----
-
-## A-DAP Architecture
-
-Traditional systems:
-
-```text
-User
-↓
-Model
-↓
-Action
-↓
-Log
-```
-
-A-DAP:
-
-```text
-User
-↓
-Model
-↓
-Decision Envelope
-↓
-Hash Generation
-↓
-External Temporal Anchor
-↓
-Evidence Record
-↓
-Execution
-```
-
-Purpose:
-
-Transform decisions from transient events into externally verifiable objects.
-
----
-
-## Temporal Integrity
-
-Integrity alone is insufficient.
-
-A cryptographic hash can prove that evidence remained unchanged.
-
-It cannot independently prove when the evidence existed.
-
-Therefore A-DAP supports optional temporal anchoring mechanisms.
+Current AI governance and explainability systems primarily reconstruct explanations after execution.
 
 Examples:
 
-- OpenTimestamps
-- Independent witness publication
-- RFC3161 timestamp authorities
-- External blockchain commitments
-- Third-party email hash delivery
+- Explainability frameworks (LIME, SHAP)
+- Documentation standards
+- Logging systems
+- Governance reports
+- Risk frameworks
 
-Purpose:
+These approaches answer:
 
-Provide evidence that the commitment existed before outcome observation.
+> "Why do we think the model decided this?"
 
-Strengthened properties:
+A-DAP asks a different question:
 
-✓ Existence
+> "Can we prove what decision existed before the result became known?"
 
-✓ Integrity
+---
 
-✓ Temporal precedence
+## Architectural Principles
+
+### P1 — Record ≠ Proof
+
+Documenting an event is not equivalent to proving it existed before observation.
+
+---
+
+### P2 — Explanation ≠ Verification
+
+Post-hoc explanations do not demonstrate prior existence.
+
+---
+
+### P3 — Decisions without verifiable prior existence generate narratives, not evidence
+
+Retrospective rationalization is indistinguishable from competence without preserved evidence.
+
+---
+
+## Scope
+
+A-DAP currently targets:
+
+✅ Credit scoring systems
+
+✅ Clinical decision pipelines
+
+✅ Rule-based automated systems
+
+✅ Deterministic ML pipelines
+
+✅ Temperature=0 controlled LLM environments
+
+✅ Binary and categorical decision systems
+
+---
+
+## Current limitations
+
+A-DAP v0.1 does not fully address:
+
+❌ Hardware-level GPU non-determinism
+
+❌ Temperature > 0 generative systems
+
+❌ Autonomous multi-agent chains
+
+❌ Full stochastic reconstruction
+
+❌ Institutional accountability
 
 ---
 
 ## Repository Structure
 
 ```text
-a-dap-protocol/
+A-DAP/
+│
+├── README.md
+├── PROOF.md
+├── REVIEW_REQUEST.md
+├── REPOSITORY_MAP.md
 │
 ├── specification/
 │
@@ -155,171 +109,197 @@ a-dap-protocol/
 ├── examples/
 │
 ├── cases/
-│   ├── healthcare-triage.md
-│   ├── credit-scoring.md
-│   ├── content-moderation.md
-│   └── autonomous-agents.md
 │
 ├── integration/
-│   ├── openai-agent-flow.md
-│   ├── openai-envelope-example.json
-│   ├── openai-sdk-example.py
-│   └── verification-flow.md
 │
-├── README.md
-└── LICENSE
+└── archive/
 ```
 
 ---
 
-# 10-Minute Audit Path
+## Repository Status
 
-Follow this order:
+Status:
 
-### Step 1
+ACTIVE
 
-Read:
+This repository is the single public source of truth for:
 
-```text
-specification/
-```
+- Protocol specification
+- Verification examples
+- Proof artifacts
+- Integrations
+- External review
 
-Understand:
+Historical repositories are preserved only for reproducibility.
 
-- Envelope
-- Hash
-- Verification
-- Temporal integrity
-
----
-
-### Step 2
-
-Open:
-
-```text
-examples/minimal-envelope.json
-```
-
-Understand:
-
-- decision payload
-- evidence structure
+Archived repositories must not be interpreted as current protocol definitions.
 
 ---
 
-### Step 3
+## Verification Path
 
-Run:
+Minimal cold-start verification:
 
-```text
-examples/tamper-test.md
+```bash
+git clone https://github.com/orionorganizacao-dotcom/a-dap-protocol.git
+
+cd a-dap-protocol
+
+python verify_adap.py examples/minimal-envelope.json
+```
+
+Expected result:
+
+```bash
+Envelope loaded
+
+Computing SHA256...
+
+Expected:
+5f2b17f4...
+
+Computed:
+5f2b17f4...
+
+MATCH
+
+Verification: PASS
+```
+
+---
+
+## Tamper Test
+
+The repository includes an intentional falsification example:
+
+```bash
+python verify_adap.py examples/tampered-envelope.json
 ```
 
 Expected:
 
-Original evidence:
+```bash
+Expected:
+5f2b17f4...
 
-```text
-✓ Valid
-```
+Computed:
+92ab7ce1...
 
-Modified evidence:
-
-```text
-✗ Invalid
-```
-
----
-
-### Step 4
-
-Read one practical case:
-
-```text
-cases/healthcare-triage.md
-```
-
-or
-
-```text
-cases/autonomous-agents.md
+Verification: FAIL
 ```
 
 ---
 
-### Step 5
+## Proof of Prior Existence
 
-Read:
+A-DAP supports independent timestamp anchoring.
 
-```text
-integration/openai-agent-flow.md
-```
+Current pathway:
 
-Understand how A-DAP integrates with agent systems.
+- SHA256 integrity
+- Independent timestamp proof
+- External verification
+- Tamper resistance
 
----
+See:
 
-## Minimal Hypothesis
-
-A-DAP hypothesis:
-
-> "Decisions become externally verifiable objects instead of transient execution events."
+proof/TIMESTAMPING.md
 
 ---
 
-## Scope of v0.1
+## External Audit
 
-Included:
+Independent reviewers are encouraged to attempt:
 
-✓ Envelope
+- Integrity attacks
+- Temporal attacks
+- Reproducibility failures
+- Hash collisions
+- Verification inconsistencies
+- Boundary failures
 
-✓ Hash generation
+See:
 
-✓ Temporal anchoring concept
-
-✓ Verification flow
-
-✓ Tamper detection
-
-✓ External audit path
-
-✓ Agent integration examples
-
-✓ Real-world use cases
+REVIEW_REQUEST.md
 
 ---
 
-Not included:
+## Threat Model
 
-✗ Ed25519 signatures
+A-DAP does NOT claim to:
 
-✗ Full RFC3161 implementation
-
-✗ Merkle trees
-
-✗ Database backend
-
-✗ Dashboard UI
-
-✗ Distributed verification
-
-✗ Multi-agent orchestration
-
----
-
-## Limitations
-
-A-DAP does not:
-
-- prove decision correctness
-- guarantee truthfulness of inputs
-- eliminate malicious operators
+- prove truth
+- eliminate manipulation
+- guarantee correctness
 - create institutional accountability
-- replace governance systems
+- solve all AI governance problems
 
-A-DAP preserves independently verifiable evidence.
+A-DAP only claims:
+
+> Preserve independently verifiable evidence of decision existence.
 
 ---
+
+## Design Philosophy
+
+Traditional systems:
+
+```text
+Decision
+    ↓
+Execution
+    ↓
+Logging
+    ↓
+Explanation
+```
+
+A-DAP:
+
+```text
+Decision
+    ↓
+Evidence Preservation
+    ↓
+Execution
+    ↓
+Verification
+```
+
+---
+
+## Citation
+
+If using A-DAP in research:
+
+```text
+A-DAP:
+Auditable Decision Accountability Protocol
+
+Version:
+v0.1
+
+Repository:
+https://github.com/orionorganizacao-dotcom/a-dap-protocol
+```
+
+---
+
+## License
 
 MIT License
+
+---
+
+## Current Status
+
+A-DAP v0.1
+
+Status:
+
+Protocol frozen for hostile external review.
+
+Current objective:
+
+> Attempt to break the protocol.
