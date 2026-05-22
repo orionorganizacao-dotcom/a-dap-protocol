@@ -2,154 +2,211 @@
 
 This document records the minimal cold-start verification path for A-DAP v0.1.
 
-Objective:
+## Objective
 
-Demonstrate that a decision envelope can be independently verified through deterministic hashing.
+Demonstrate that a decision envelope can be independently verified through:
+
+- deterministic hashing
+- tamper detection
+- temporal anchoring
+- independent auditability
+
+without requiring access to internal systems.
 
 ---
 
-## Command
+# Verification Components
 
-Run from repository root:
+Repository artifacts used:
+
+```text
+examples/minimal-envelope-verified.json
+examples/tampered-envelope.json
+examples/ledger.json
+
+reference/verify_adap.py
+
+proof/external-audit.md
+proof/TIMESTAMPING.md
+proof/timestamp-receipt.json
+```
+
+---
+
+# Step 1 — Envelope Verification
+
+Run:
 
 ```bash
-python reference/verify_adap.py
+python reference/verify_adap.py \
+examples/minimal-envelope-verified.json
 ```
 
----
-
-## Expected Output
-
-```text
-Computed hash:
-
-<computed_sha256_hash>
-
-Envelope awaiting hash generation
-```
-
----
-
-## Interpretation
-
-The verifier reads:
-
-```text
-examples/minimal-envelope.json
-```
-
-It removes:
-
-```text
-decision_hash
-```
-
-It serializes the remaining payload deterministically using:
-
-```text
-sort_keys=True
-separators=(",",":")
-```
-
-It computes:
-
-```text
-SHA-256
-```
-
-The current envelope contains:
-
-```text
-"decision_hash":"TO_BE_COMPUTED"
-```
-
-Expected state:
-
-```text
-Envelope awaiting hash generation
-```
-
----
-
-## Verification Flow
-
-```text
-Envelope
-    ↓
-Canonicalization
-    ↓
-SHA-256
-    ↓
-Verification result
-```
-
----
-
-## Next Verification State
-
-After replacing:
-
-```text
-"decision_hash":"TO_BE_COMPUTED"
-```
-
-with the computed hash:
-
-```text
-"decision_hash":"<generated_hash>"
-```
-
-Running:
+Expected output:
 
 ```bash
-python reference/verify_adap.py
-```
+Verification Result
 
-should return:
+Computed Hash:
+8d43f9e12ab45c78f4ab2...
 
-```text
+Stored Hash:
+8d43f9e12ab45c78f4ab2...
+
 ✓ Verification passed
 ```
 
+Purpose:
+
+Demonstrates that the envelope integrity remains preserved.
+
+Question answered:
+
+"Has the evidence changed?"
+
 ---
 
-## Tamper Validation
+# Step 2 — Tamper Detection
 
-Modify:
-
-```json
-"decision":"High Risk Priority"
-```
-
-to:
-
-```json
-"decision":"Low Risk Priority"
-```
-
-Run again:
+Run:
 
 ```bash
-python reference/verify_adap.py
+python reference/verify_adap.py \
+examples/tampered-envelope.json
 ```
 
-Expected:
+Expected output:
+
+```bash
+Verification Result
+
+Computed Hash:
+7fe22f18a09f0...
+
+Stored Hash:
+8d43f9e12ab45...
+
+✗ Verification failed
+Hash mismatch detected
+```
+
+Purpose:
+
+Demonstrates resistance against post-creation modifications.
+
+Question answered:
+
+"Can modifications remain hidden?"
+
+Answer:
+
+No.
+
+---
+
+# Step 3 — Temporal Verification
+
+Run:
+
+```bash
+ots verify \
+examples/minimal-envelope-verified.json.ots
+```
+
+Expected output:
+
+```bash
+Success!
+
+Bitcoin block: XXXXXXX
+
+Timestamp verified
+```
+
+Purpose:
+
+Demonstrates that the decision envelope existed before later observations.
+
+Question answered:
+
+"Could the envelope have been created after the result?"
+
+Answer:
+
+Independent timestamp evidence reduces this possibility.
+
+---
+
+# Step 4 — External Audit
+
+Follow:
 
 ```text
-✗ Hash mismatch
-Integrity validation failed
+proof/external-audit.md
+```
+
+Objective:
+
+Allow independent third parties to reproduce the verification process.
+
+Question answered:
+
+"Can verification occur without trusting the author?"
+
+Answer:
+
+Yes.
+
+---
+
+# Evidence Chain
+
+```text
+Decision
+↓
+Decision Envelope
+↓
+SHA256 Hash
+↓
+External Timestamp Anchor
+↓
+Verification
+↓
+Tamper Test
+↓
+External Audit
 ```
 
 ---
 
-## Why This Matters
+# Security Properties
 
-This demonstrates that A-DAP does not only document decisions.
+Integrity
 
-It preserves independently verifiable evidence.
+✓ Detects post-creation modification
+
+Temporal Existence
+
+✓ Provides evidence of existence before later observations
+
+Tamper Resistance
+
+✓ Invalidates altered envelopes
+
+Reproducibility
+
+✓ Independent third parties can reproduce results
+
+Cold-start verification
+
+✓ git clone
+✓ verification commands
+✓ proof reproduction
 
 ---
 
-End of verification record
+# Architectural Statement
 
-A-DAP v0.1
+A-DAP does not prove that a decision was correct.
+
+A-DAP preserves evidence that a decision existed, remained consistent, and can be independently verified.
