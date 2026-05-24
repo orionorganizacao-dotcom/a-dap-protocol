@@ -1,58 +1,134 @@
-# A-DAP — Operational Provenance Threat Model v0.1
-
-## Purpose
-
-This document defines the primary threat model for A-DAP Operational Provenance.
-
-The goal is not to prove that a system was correct.
-
-The goal is to preserve independently verifiable evidence regarding the operational conditions surrounding output generation.
-
-A-DAP does not reconstruct hidden reasoning.
-
-A-DAP does not recover true internal intent.
-
-A-DAP preserves evidence.
+# A-DAP — Operational Provenance Layer v0.2
 
 ---
 
-# Threat Model Scope
+# Purpose
 
-A-DAP protects against:
+A-DAP defines a layer for preserving independently verifiable evidence regarding the operational conditions surrounding AI output generation.
 
-• retrospective alteration of operational evidence
+The objective is not to reconstruct hidden internal reasoning.
 
-• loss of execution context
+The objective is not to recover true intent.
 
-• ambiguity regarding production conditions
-
-• post-hoc reconstruction without evidence
-
-• unverifiable narratives replacing evidence
-
-A-DAP does not protect against:
-
-• complete institutional collusion
-
-• compromised cryptographic roots
-
-• false external data sources
-
-• malicious human interpretation
-
-• truth manipulation outside the evidence chain
+The objective is to preserve evidence.
 
 ---
 
 # Core distinction
 
-Traditional logging asks:
+Content provenance and decision provenance are distinct properties.
 
-"What happened?"
+Content provenance answers:
 
-A-DAP asks:
+"Who created this?"
 
-"What independently verifiable evidence existed before interpretation occurred?"
+Decision provenance answers:
+
+"Under what verifiable conditions was this produced?"
+
+Human and institutional review answers:
+
+"What does this mean and who is responsible?"
+
+---
+
+# Three-layer trust architecture
+
+---
+
+## Layer 1 — Identity / Asset Provenance
+
+Purpose:
+
+Preserve authorship and origin information regarding generated artifacts.
+
+Examples:
+
+• C2PA
+
+• Content Credentials
+
+• Watermarks
+
+• Cryptographic signatures
+
+Question answered:
+
+"Who produced this artifact?"
+
+---
+
+## Layer 2 — Operational Provenance
+
+A-DAP Layer
+
+Purpose:
+
+Preserve independently verifiable evidence regarding the operational conditions surrounding production.
+
+Examples:
+
+• model version
+
+• tool chain identifiers
+
+• retrieval context
+
+• input state
+
+• timestamps
+
+• execution metadata
+
+• hashes
+
+• decision envelopes
+
+Question answered:
+
+"Under what verifiable conditions was this generated?"
+
+Limitations:
+
+A-DAP does not reconstruct hidden internal reasoning.
+
+A-DAP does not reveal a true "why."
+
+A-DAP preserves evidence.
+
+---
+
+## Layer 3 — Interpretation and Accountability
+
+Actors:
+
+• human auditors
+
+• regulators
+
+• institutions
+
+• legal systems
+
+Question answered:
+
+"What does this mean and who is responsible?"
+
+---
+
+# Structural observations
+
+Without Layer 1:
+
+Origin becomes unclear.
+
+Without Layer 2:
+
+Operational context disappears.
+
+Without Layer 3:
+
+Evidence does not produce accountability.
 
 ---
 
@@ -92,9 +168,9 @@ Optional:
 
 ---
 
-# Evidence constraints
+# Evidence Constraints
 
-Evidence preservation requires:
+---
 
 ## Integrity
 
@@ -110,7 +186,7 @@ Mechanisms:
 
 ---
 
-## Temporal anchoring
+## Temporal Anchoring
 
 Evidence must demonstrate existence in time.
 
@@ -138,7 +214,7 @@ Mechanisms:
 
 ---
 
-# Threat Scenarios
+# Threat Model
 
 ---
 
@@ -148,7 +224,7 @@ Retrospective Log Rewrite
 
 Attack:
 
-System alters execution records after output generation.
+Execution records are modified after generation.
 
 Traditional logs:
 
@@ -156,15 +232,15 @@ Potentially vulnerable.
 
 A-DAP response:
 
-Hash mismatch.
+• hash mismatch
 
-Signature mismatch.
+• signature mismatch
 
-Timestamp inconsistency.
+• timestamp inconsistency
 
 Status:
 
-Detectable.
+Detectable
 
 ---
 
@@ -174,21 +250,21 @@ Context Removal Attack
 
 Attack:
 
-System removes retrieval context or tool usage information.
+Retrieval context or tool usage is removed.
 
-Traditional logs:
+Traditional systems:
 
-May silently omit.
+May silently omit information.
 
 A-DAP response:
 
-Envelope inconsistency.
+• envelope inconsistency
 
-Missing evidence chain.
+• missing evidence chain
 
 Status:
 
-Detectable.
+Detectable
 
 ---
 
@@ -198,7 +274,7 @@ Synthetic Narrative Attack
 
 Attack:
 
-System generates explanations after outcomes occur.
+Explanations are generated after outcomes occur.
 
 Example:
 
@@ -208,15 +284,15 @@ No evidence exists proving Y was available before execution.
 
 Traditional systems:
 
-Explanation may appear valid.
+Explanation appears plausible.
 
 A-DAP response:
 
-No prior evidence envelope.
+No prior evidence envelope exists.
 
 Status:
 
-Detectable.
+Detectable
 
 ---
 
@@ -226,7 +302,7 @@ Verifier Dependence Attack
 
 Attack:
 
-Verification depends on the same entity that generated evidence.
+Evidence validation depends on the same entity that generated it.
 
 Problem:
 
@@ -242,11 +318,11 @@ Examples:
 
 • independent verifier implementations
 
-• replicated evidence repositories
+• replicated repositories
 
 Status:
 
-Partially mitigated.
+Partially mitigated
 
 ---
 
@@ -272,103 +348,149 @@ No system can bootstrap legitimacy from itself.
 
 Status:
 
-Assumption boundary.
+Boundary assumption
 
 ---
 
-# Structural observations
+# Demonstrative Case
 
-Without Layer 1:
+## GCD-001 — Missing Operational Provenance Scenario
 
-Origin becomes unclear.
+Purpose:
 
-Without Layer 2:
-
-Operational context disappears.
-
-Without Layer 3:
-
-Evidence alone produces no accountability.
+Demonstrate a situation where Layer 1 remains valid while Layer 2 is absent.
 
 ---
 
-# Architectural relationship
+Scenario
 
-Layer 1
+Assume two generated outputs:
 
-Identity / Asset Provenance
+Output A
 
-Question:
+Output B
 
-"Who created this artifact?"
+Both preserve:
 
-Examples:
+• authorship
 
-• C2PA
-
-• Content Credentials
-
-• Watermarks
-
-• Cryptographic signatures
-
----
-
-Layer 2
-
-Operational Provenance
-
-Question:
-
-"Under what verifiable conditions was this generated?"
-
-Examples:
-
-• decision envelopes
-
-• retrieval context
+• signatures
 
 • timestamps
 
-• model metadata
+• cryptographic integrity
 
-• tool chains
+Layer 1 succeeds.
 
-• evidence hashes
+Question answered:
 
----
+"Who produced these artifacts?"
 
-Layer 3
+Answer:
 
-Interpretation and Accountability
-
-Question:
-
-"What does this mean and who is responsible?"
-
-Actors:
-
-• auditors
-
-• regulators
-
-• institutions
-
-• legal systems
+Known.
 
 ---
 
-# Canonical statement
+Observed problem
 
-A signed artifact can preserve authorship.
+Auditors later attempt reconstruction:
 
-A decision envelope can preserve evidence.
+• model version used
 
-Institutions determine responsibility.
+• retrieval sources available
+
+• tool chain state
+
+• execution conditions
+
+• input state
+
+No independently verifiable operational evidence exists.
+
+Only outputs remain.
 
 ---
 
-# Limitation statement
+Consequence
+
+Auditors can verify:
+
+"This artifact existed."
+
+Auditors cannot verify:
+
+"Under what operational conditions was this produced?"
+
+Multiple explanations become possible:
+
+Hypothesis A
+
+Different retrieval context
+
+Hypothesis B
+
+Different model version
+
+Hypothesis C
+
+Different external tool state
+
+Hypothesis D
+
+Post-hoc narrative reconstruction
+
+These hypotheses become indistinguishable.
+
+---
+
+Structural Result
+
+Layer 1 remains intact.
+
+Authorship survives.
+
+Operational context disappears.
+
+Evidence collapses into narrative.
+
+---
+
+Observation
+
+Failure did not originate from lack of provenance.
+
+Failure originated from missing operational provenance.
+
+Layer 1 preserved identity.
+
+Layer 2 was absent.
+
+---
+
+Implication
+
+Content provenance alone does not preserve production conditions.
+
+Without Layer 2:
+
+the artifact survives,
+
+but surrounding evidence disappears.
+
+---
+
+# Canonical Statements
+
+"A signed artifact can preserve authorship."
+
+"A decision envelope can preserve evidence."
+
+"Institutions determine responsibility."
+
+---
+
+# Limitation Statement
 
 A-DAP does not reveal hidden internal reasoning.
 
@@ -384,7 +506,7 @@ Interpretation remains a human and institutional function.
 
 Version:
 
-v0.1
+v0.2
 
 Status:
 
