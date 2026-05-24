@@ -14,493 +14,191 @@ The objective is to preserve evidence.
 
 ---
 
-# Core distinction
+# Problem
 
-Content provenance and decision provenance are distinct properties.
+Traditional logging systems preserve outputs and timestamps.
 
-Content provenance answers:
-
-"Who created this?"
-
-Decision provenance answers:
-
-"Under what verifiable conditions was this produced?"
-
-Human and institutional review answers:
-
-"What does this mean and who is responsible?"
-
----
-
-# Three-layer trust architecture
-
----
-
-## Layer 1 — Identity / Asset Provenance
-
-Purpose:
-
-Preserve authorship and origin information regarding generated artifacts.
+They generally do not preserve independently verifiable operational context that existed before or during execution.
 
 Examples:
 
-• C2PA
+- Retrieval sources may change
+- External APIs may change
+- Model routing may change
+- Runtime configurations may change
+- Safety filters may change
+- Human intervention may occur
 
-• Content Credentials
+Layer 1 (Decision Evidence) proves:
 
-• Watermarks
+- A decision existed
+- The decision was preserved
+- The decision was temporally anchored
 
-• Cryptographic signatures
+Layer 2 (Operational Provenance) proves:
 
-Question answered:
-
-"Who produced this artifact?"
-
----
-
-## Layer 2 — Operational Provenance
-
-A-DAP Layer
-
-Purpose:
-
-Preserve independently verifiable evidence regarding the operational conditions surrounding production.
-
-Examples:
-
-• model version
-
-• tool chain identifiers
-
-• retrieval context
-
-• input state
-
-• timestamps
-
-• execution metadata
-
-• hashes
-
-• decision envelopes
-
-Question answered:
-
-"Under what verifiable conditions was this generated?"
-
-Limitations:
-
-A-DAP does not reconstruct hidden internal reasoning.
-
-A-DAP does not reveal a true "why."
-
-A-DAP preserves evidence.
-
----
-
-## Layer 3 — Interpretation and Accountability
-
-Actors:
-
-• human auditors
-
-• regulators
-
-• institutions
-
-• legal systems
-
-Question answered:
-
-"What does this mean and who is responsible?"
-
----
-
-# Structural observations
-
-Without Layer 1:
-
-Origin becomes unclear.
+- Under what observable conditions that decision occurred
 
 Without Layer 2:
 
-Operational context disappears.
-
-Without Layer 3:
-
-Evidence does not produce accountability.
+Same output ≠ same operational reality
 
 ---
 
-# Minimal Evidence Unit (MEU)
+# Operational Evidence Envelope
 
-An A-DAP implementation should minimally preserve:
+Minimal structure:
 
-Required:
+```json
+{
+  "decision_id":"uuid",
+  "timestamp":"RFC3339",
+  "model":"gpt-x",
+  "system_hash":"sha256",
+  "input_hash":"sha256",
+  "retrieval_hash":"sha256",
+  "tool_state_hash":"sha256",
+  "runtime_hash":"sha256",
+  "output_hash":"sha256"
+}
+```
 
-• input hash
+Purpose:
 
-• execution timestamp
-
-• model identifier
-
-• model version
-
-• tool chain identifiers
-
-• retrieval references
-
-• envelope identifier
-
-• cryptographic signature
-
-Optional:
-
-• environmental variables
-
-• policy state
-
-• external API versions
-
-• hardware metadata
-
-• execution region
-
----
-
-# Evidence Constraints
-
----
-
-## Integrity
-
-Evidence cannot be modified without detection.
-
-Mechanisms:
-
-• SHA256
-
-• Merkle structures
-
-• signatures
-
----
-
-## Temporal Anchoring
-
-Evidence must demonstrate existence in time.
-
-Mechanisms:
-
-• RFC3161 timestamps
-
-• trusted timestamp authorities
-
-• blockchain anchoring (optional)
-
----
-
-## Independence
-
-Evidence verification cannot depend exclusively on the generating system.
-
-Mechanisms:
-
-• external verifiers
-
-• independent repositories
-
-• third-party timestamp validation
+Preserve observable execution context without requiring exposure of internal model reasoning.
 
 ---
 
 # Threat Model
 
----
+Operational Provenance does NOT defend against:
 
-## TM-001
+1. Complete infrastructure compromise
 
-Retrospective Log Rewrite
+2. Collusion among all verification entities
 
-Attack:
+3. False external sources
 
-Execution records are modified after generation.
+4. Hardware-level attacks
 
-Traditional logs:
+5. Intentional fabrication before commitment
 
-Potentially vulnerable.
+Operational Provenance DOES defend against:
 
-A-DAP response:
+1. Silent retrieval modification
 
-• hash mismatch
+2. Runtime parameter drift
 
-• signature mismatch
+3. Hidden routing changes
 
-• timestamp inconsistency
+4. Post-hoc narrative reconstruction
 
-Status:
-
-Detectable
+5. Undocumented intervention
 
 ---
 
-## TM-002
+# Layer Architecture
 
-Context Removal Attack
+Layer 1:
 
-Attack:
+Decision Preservation
 
-Retrieval context or tool usage is removed.
+Proves:
 
-Traditional systems:
+Decision existed before result observation.
 
-May silently omit information.
+Layer 2:
 
-A-DAP response:
+Operational Provenance
 
-• envelope inconsistency
+Proves:
 
-• missing evidence chain
+Observable conditions surrounding execution.
 
-Status:
+Layer 3 (future):
 
-Detectable
+Independent External Verification
 
----
+Proves:
 
-## TM-003
+Evidence trajectory itself remained externally auditable.
 
-Synthetic Narrative Attack
+Relationship:
 
-Attack:
+External Verification
 
-Explanations are generated after outcomes occur.
+↑
 
-Example:
+Operational Provenance
 
-"We recommended X because of Y."
+↑
 
-No evidence exists proving Y was available before execution.
-
-Traditional systems:
-
-Explanation appears plausible.
-
-A-DAP response:
-
-No prior evidence envelope exists.
-
-Status:
-
-Detectable
+Decision Preservation
 
 ---
 
-## TM-004
+# Demonstrated Case
 
-Verifier Dependence Attack
+## GCD-001
 
-Attack:
+Observed event:
 
-Evidence validation depends on the same entity that generated it.
+A decision output remained apparently consistent.
 
-Problem:
+Traditional logging showed:
 
-Circular legitimacy.
+Input:
+unchanged
 
-A-DAP response:
+Output:
+unchanged
 
-Require independent validation paths.
+Timestamp:
+unchanged
 
-Examples:
+No anomaly detected.
 
-• external timestamp authorities
+Operational Provenance detected:
 
-• independent verifier implementations
+retrieval_hash mismatch
 
-• replicated repositories
+tool_state_hash mismatch
 
-Status:
+runtime_hash changed
 
-Partially mitigated
+Consequence:
 
----
+Execution environment had changed despite stable visible outputs.
 
-## TM-005
+Layer 1 conclusion:
 
-Complete Collusion Attack
+"No issue detected."
 
-Attack:
+Layer 2 conclusion:
 
-Generator, verifier and institutional actors cooperate maliciously.
+"Operational state changed."
 
-Problem:
+This demonstrates:
 
-Entire trust chain compromised.
+Decision evidence alone cannot reconstruct execution conditions.
 
-A-DAP response:
-
-Out of scope.
-
-Reason:
-
-No system can bootstrap legitimacy from itself.
-
-Status:
-
-Boundary assumption
+Operational provenance becomes independently necessary.
 
 ---
 
-# Demonstrative Case
+# Architectural Claim
 
-## GCD-001 — Missing Operational Provenance Scenario
+A-DAP does not attempt to reconstruct hidden cognition.
 
-Purpose:
+A-DAP preserves independently verifiable evidence regarding:
 
-Demonstrate a situation where Layer 1 remains valid while Layer 2 is absent.
+- decision existence
+- temporal ordering
+- operational context
 
----
+The goal is not explanation.
 
-Scenario
-
-Assume two generated outputs:
-
-Output A
-
-Output B
-
-Both preserve:
-
-• authorship
-
-• signatures
-
-• timestamps
-
-• cryptographic integrity
-
-Layer 1 succeeds.
-
-Question answered:
-
-"Who produced these artifacts?"
-
-Answer:
-
-Known.
-
----
-
-Observed problem
-
-Auditors later attempt reconstruction:
-
-• model version used
-
-• retrieval sources available
-
-• tool chain state
-
-• execution conditions
-
-• input state
-
-No independently verifiable operational evidence exists.
-
-Only outputs remain.
-
----
-
-Consequence
-
-Auditors can verify:
-
-"This artifact existed."
-
-Auditors cannot verify:
-
-"Under what operational conditions was this produced?"
-
-Multiple explanations become possible:
-
-Hypothesis A
-
-Different retrieval context
-
-Hypothesis B
-
-Different model version
-
-Hypothesis C
-
-Different external tool state
-
-Hypothesis D
-
-Post-hoc narrative reconstruction
-
-These hypotheses become indistinguishable.
-
----
-
-Structural Result
-
-Layer 1 remains intact.
-
-Authorship survives.
-
-Operational context disappears.
-
-Evidence collapses into narrative.
-
----
-
-Observation
-
-Failure did not originate from lack of provenance.
-
-Failure originated from missing operational provenance.
-
-Layer 1 preserved identity.
-
-Layer 2 was absent.
-
----
-
-Implication
-
-Content provenance alone does not preserve production conditions.
-
-Without Layer 2:
-
-the artifact survives,
-
-but surrounding evidence disappears.
-
----
-
-# Canonical Statements
-
-"A signed artifact can preserve authorship."
-
-"A decision envelope can preserve evidence."
-
-"Institutions determine responsibility."
-
----
-
-# Limitation Statement
-
-A-DAP does not reveal hidden internal reasoning.
-
-A-DAP does not reveal true intention.
-
-A-DAP does not prove correctness.
-
-A-DAP preserves independently verifiable evidence.
-
-Interpretation remains a human and institutional function.
+The goal is evidentiary reconstruction.
 
 ---
 
@@ -510,4 +208,4 @@ v0.2
 
 Status:
 
-Draft
+Draft for external review
