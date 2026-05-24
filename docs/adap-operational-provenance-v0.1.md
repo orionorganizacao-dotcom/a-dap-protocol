@@ -1,5 +1,19 @@
 # A-DAP — Operational Provenance Layer v0.2
 
+## Provenance Notice
+
+This document is a conceptual and architectural specification developed within the A-DAP research workflow.
+
+Examples, schemas, and structures are illustrative reference artifacts intended to formalize operational provenance concepts.
+
+This document does not claim novelty over cryptographic primitives, logging systems, provenance mechanisms, timestamps, hashing systems, or evidence preservation techniques individually.
+
+Its contribution is the architectural composition and evidentiary relationship among these components.
+
+Status:
+
+Draft for external review.
+
 ---
 
 # Purpose
@@ -18,7 +32,7 @@ The objective is to preserve evidence.
 
 Traditional logging systems preserve outputs and timestamps.
 
-They generally do not preserve independently verifiable operational context that existed before or during execution.
+They generally do not preserve independently verifiable operational context existing before or during execution.
 
 Examples:
 
@@ -148,12 +162,15 @@ A decision output remained apparently consistent.
 Traditional logging showed:
 
 Input:
+
 unchanged
 
 Output:
+
 unchanged
 
 Timestamp:
+
 unchanged
 
 No anomaly detected.
@@ -199,6 +216,23 @@ A-DAP preserves independently verifiable evidence regarding:
 The goal is not explanation.
 
 The goal is evidentiary reconstruction.
+
+---
+
+# Limitations
+
+A-DAP does not:
+
+- prove truth
+- prove correctness
+- reconstruct internal model cognition
+- eliminate institutional accountability requirements
+- prevent total collusion
+- guarantee absence of manipulation
+
+A-DAP preserves evidence.
+
+Evidence and truth are not equivalent properties.
 
 ---
 
