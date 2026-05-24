@@ -1,12 +1,12 @@
-# A-DAP — Operational Provenance Layer v0.2
+# A-DAP — Verification Transfer Protocol (VTP) v0.1
 
 ## Provenance Notice
 
 This document is a conceptual and architectural specification developed within the A-DAP research workflow.
 
-Examples, schemas, and structures are illustrative reference artifacts intended to formalize operational provenance concepts.
+Examples, schemas, and structures are illustrative reference artifacts intended to formalize evidence transfer and verification mechanisms.
 
-This document does not claim novelty over cryptographic primitives, logging systems, provenance mechanisms, timestamps, hashing systems, or evidence preservation techniques individually.
+This document does not claim novelty over cryptographic primitives, timestamp systems, signature schemes, blockchain systems, distributed verification networks, or evidence preservation mechanisms individually.
 
 Its contribution is the architectural composition and evidentiary relationship among these components.
 
@@ -18,227 +18,302 @@ Draft for external review.
 
 # Purpose
 
-A-DAP defines a layer for preserving independently verifiable evidence regarding the operational conditions surrounding AI output generation.
+The Verification Transfer Protocol (VTP) defines how evidence generated inside A-DAP exits the originating environment while preserving independently verifiable properties.
 
-The objective is not to reconstruct hidden internal reasoning.
+The objective is not to prove truth.
 
-The objective is not to recover true intent.
+The objective is not to prove correctness.
 
-The objective is to preserve evidence.
+The objective is not to reconstruct internal cognition.
+
+The objective is to preserve verifiable evidence across trust boundaries.
 
 ---
 
 # Problem
 
-Traditional logging systems preserve outputs and timestamps.
+Evidence that remains entirely inside the originating system remains vulnerable to:
 
-They generally do not preserve independently verifiable operational context existing before or during execution.
+- silent modification
+- post-hoc reconstruction
+- infrastructure compromise
+- authority concentration
+- epistemic dependency
 
-Examples:
+Even if evidence is internally preserved, it remains dependent on the environment that generated it.
 
-- Retrieval sources may change
-- External APIs may change
-- Model routing may change
-- Runtime configurations may change
-- Safety filters may change
-- Human intervention may occur
-
-Layer 1 (Decision Evidence) proves:
-
-- A decision existed
-- The decision was preserved
-- The decision was temporally anchored
-
-Layer 2 (Operational Provenance) proves:
-
-- Under what observable conditions that decision occurred
-
-Without Layer 2:
-
-Same output ≠ same operational reality
+Evidence must become independently reconstructible.
 
 ---
 
-# Operational Evidence Envelope
+# Architectural Motivation
 
-Minimal structure:
+Layer 1 establishes:
+
+Decision existed.
+
+Layer 2 establishes:
+
+Operational conditions existed.
+
+Layer 3 establishes:
+
+Evidence escaped the originating environment while preserving independent verifiability.
+
+Without Layer 3:
+
+Evidence remains trapped inside the system that generated it.
+
+Same evidence ≠ independent evidence.
+
+---
+
+# Transfer Requirements
+
+For a transfer to be considered valid, the following requirements must be satisfied.
+
+---
+
+## VTP-1 — Temporal Anchoring
+
+Transferred evidence must receive independently verifiable temporal ordering.
+
+Possible implementations:
+
+- RFC-3161 Timestamp Authority
+- Blockchain commitment
+- Public notarization service
+- Independent timestamp network
+
+Purpose:
+
+Prevent retroactive evidence fabrication.
+
+---
+
+## VTP-2 — Integrity Preservation
+
+Transferred evidence must preserve:
+
+- hash integrity
+- canonical structure
+- signature validity
+
+Example:
+
+```text
+SHA256(envelope)
+
+Ed25519(signature)
+```
+
+Purpose:
+
+Prevent silent modification after transfer.
+
+---
+
+## VTP-3 — Epistemic Independence
+
+At least one verification trajectory must remain independent from the originating environment.
+
+Acceptable examples:
+
+- Independent timestamp authority
+- Independent repository mirror
+- Independent audit node
+- Public append-only log
+
+Insufficient examples:
+
+- Second database controlled by same organization
+- Internal replicated storage
+- Backup systems inside same trust boundary
+
+Purpose:
+
+Prevent self-validation.
+
+---
+
+## VTP-4 — Reconstructibility
+
+External observers must be capable of reconstructing:
+
+- existence
+- integrity
+- temporal sequence
+
+Without requiring:
+
+- internal infrastructure access
+- hidden model states
+- proprietary model reasoning
+- organizational trust assumptions
+
+Purpose:
+
+Enable evidence reconstruction outside the generating environment.
+
+---
+
+# Minimal Transfer Envelope
 
 ```json
 {
-  "decision_id":"uuid",
-  "timestamp":"RFC3339",
-  "model":"gpt-x",
-  "system_hash":"sha256",
-  "input_hash":"sha256",
-  "retrieval_hash":"sha256",
-  "tool_state_hash":"sha256",
-  "runtime_hash":"sha256",
-  "output_hash":"sha256"
+"envelope_hash":"sha256",
+"signature":"ed25519",
+"timestamp_receipt":"RFC3161",
+"proof_location":"uri",
+"verification_path":"independent"
 }
 ```
 
 Purpose:
 
-Preserve observable execution context without requiring exposure of internal model reasoning.
+Provide minimal transferable evidence required for independent verification.
 
 ---
 
-# Threat Model
+# Verification Procedure
 
-Operational Provenance does NOT defend against:
+External verifier process:
 
-1. Complete infrastructure compromise
+Step 1:
 
-2. Collusion among all verification entities
+Retrieve transferred envelope.
 
-3. False external sources
+Step 2:
 
-4. Hardware-level attacks
+Validate hash integrity.
 
-5. Intentional fabrication before commitment
+Step 3:
 
-Operational Provenance DOES defend against:
+Validate digital signature.
 
-1. Silent retrieval modification
+Step 4:
 
-2. Runtime parameter drift
+Validate timestamp authenticity.
 
-3. Hidden routing changes
+Step 5:
 
-4. Post-hoc narrative reconstruction
+Validate independent trajectory.
 
-5. Undocumented intervention
+Step 6:
 
----
-
-# Layer Architecture
-
-Layer 1:
-
-Decision Preservation
-
-Proves:
-
-Decision existed before result observation.
-
-Layer 2:
-
-Operational Provenance
-
-Proves:
-
-Observable conditions surrounding execution.
-
-Layer 3 (future):
-
-Independent External Verification
-
-Proves:
-
-Evidence trajectory itself remained externally auditable.
-
-Relationship:
-
-External Verification
-
-↑
-
-Operational Provenance
-
-↑
-
-Decision Preservation
+Reconstruct evidence ordering.
 
 ---
 
-# Demonstrated Case
+# Verification Result
 
-## GCD-001
+Transfer validity conditions:
 
-Observed event:
+```text
+Integrity = TRUE
 
-A decision output remained apparently consistent.
+Temporal ordering = TRUE
 
-Traditional logging showed:
+Independent trajectory = TRUE
+```
 
-Input:
+Transfer invalidity conditions:
 
-unchanged
+```text
+Integrity = FALSE
 
-Output:
+OR
 
-unchanged
+Temporal ordering = FALSE
 
-Timestamp:
+OR
 
-unchanged
+Independent trajectory = FALSE
+```
 
-No anomaly detected.
+---
 
-Operational Provenance detected:
+# Example Scenario
 
-retrieval_hash mismatch
+## VTP-001
 
-tool_state_hash mismatch
+Observed situation:
 
-runtime_hash changed
+An AI system generates a decision envelope.
 
-Consequence:
+Layer 1 records:
 
-Execution environment had changed despite stable visible outputs.
+- decision hash
+- timestamp
+- output evidence
 
-Layer 1 conclusion:
+Layer 2 records:
 
-"No issue detected."
+- retrieval state
+- runtime conditions
+- operational context
 
-Layer 2 conclusion:
+Layer 3 transfers:
 
-"Operational state changed."
+- envelope hash
+- timestamp receipt
+- signature
+- external proof reference
 
-This demonstrates:
+Internal system compromise occurs later.
 
-Decision evidence alone cannot reconstruct execution conditions.
+Result:
 
-Operational provenance becomes independently necessary.
+Internal logs become untrusted.
+
+External verifier reconstructs:
+
+- decision existence
+- temporal order
+- evidence integrity
+
+without relying on the originating environment.
+
+Conclusion:
+
+Evidence remained independently reconstructible.
 
 ---
 
 # Architectural Claim
 
-A-DAP does not attempt to reconstruct hidden cognition.
+A-DAP does not attempt to prove truth.
 
-A-DAP preserves independently verifiable evidence regarding:
+A-DAP does not attempt to reconstruct cognition.
 
-- decision existence
-- temporal ordering
-- operational context
+A-DAP preserves evidence capable of surviving outside the originating environment.
 
 The goal is not explanation.
 
-The goal is evidentiary reconstruction.
+The goal is independently reconstructible evidence.
 
 ---
 
 # Limitations
 
-A-DAP does not:
+VTP does not prove:
 
-- prove truth
-- prove correctness
-- reconstruct internal model cognition
-- eliminate institutional accountability requirements
-- prevent total collusion
-- guarantee absence of manipulation
+- truth
+- correctness
+- intent
+- absence of manipulation
+- institutional accountability
+- complete resistance against total collusion
 
-A-DAP preserves evidence.
+VTP preserves evidence only.
 
-Evidence and truth are not equivalent properties.
+Evidence and truth are distinct properties.
 
 ---
 
 Version:
 
-v0.2
+v0.1
 
 Status:
 
